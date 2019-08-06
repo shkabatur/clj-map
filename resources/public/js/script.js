@@ -4,7 +4,7 @@ var ctx = canvas.getContext("2d");
 ctx.font = "italic 10pt Arial";
 
 var map = new Image();
-map.src = "img/map.jpg";
+map.src = "img/map-night.jpg";
 
 var green = new Image();
 green.src = "img/green.png";
