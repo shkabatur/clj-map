@@ -3,14 +3,24 @@
         [cheshire.core :only [generate-string parse-string]]
         [compojure.route :only [files not-found resources]]
         [compojure.core :only [defroutes GET POST]]
+        [overtone.at-at :only [every mk-pool]]
         [clj-map.ping :only [ping]]
         )
   (:gen-class))
 
+(def my-pool (mk-pool))
+(def nodes (atom []))
+(reset! nodes (parse-string (slurp "nodes.json") true))
 
-(defn ping-nodes [nodes]
-  (let [pinged-nodes (map conj nodes (doall (pmap ping (map :ip nodes))))]
-    (generate-string pinged-nodes)))
+(def pinged-nodes (atom []))
+;(reset! pinged-nodes (map conj @nodes (doall (pmap ping (map :ip @nodes)))))
+
+
+(defn update-pinged-nodes
+  [n]
+  (every n
+    #(reset! pinged-nodes (map conj @nodes (doall (pmap ping (map :ip @nodes)))))
+         my-pool))
 
 (defroutes app
   (GET "/" []
@@ -29,8 +39,14 @@
        (fn [req]
          {:status 200
           :headers {"Content-Type" "application/json"}
-          :body (ping-nodes (parse-string (slurp "nodes.json")))
+          :body (generate-string @pinged-nodes)
           }))
+
+  (POST "/change-nodes" []
+        (fn [req]
+
+          (reset! nodes (parse-string (slurp (:body req)) true))
+          (spit "nodes.json" (generate-string @nodes))))
 
   (resources "/")
   (not-found "<p>Page not found.</p>"))
@@ -38,5 +54,6 @@
 
 (defn -main
   [& args]
+  (update-pinged-nodes 4000)
   (run-server app {:port 80})
 )

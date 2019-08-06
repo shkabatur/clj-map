@@ -7,6 +7,7 @@
                  [http-kit "2.4.0-alpha4"]
                  [compojure "1.6.1"]
                  [cheshire "5.9.0"]
+                 [overtone/at-at "1.2.0"]
 
                 ]
   :main ^:skip-aot clj-map.core

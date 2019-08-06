@@ -63,7 +63,7 @@ var nodes = {
 		this.nodes_list.map( (node) => {
 			if (node.is_visible) {
 				ctx.drawImage(green,node.x, node.y, c_x, c_y);
-				ctx.fillStyle = "green";
+				ctx.fillStyle = "#53DE0D";
 				ctx.fillText(node.name, node.x + 10, node.y + 10);
 			}
 		})
@@ -125,6 +125,7 @@ canvas.ondblclick = (e) => {
 			is_visible: true,
 			id: nodes.nodes_list.length,
 			name: "test",
+      ip: "127.0.0.1",
 		};
 		nodes.nodes_list.push(node);
 	}
@@ -155,7 +156,7 @@ change_ip.onclick = (e) => {
 }
 
 save_button.onclick = (e) => {
-	fetch('change-nodes', {
+	fetch('./change-nodes', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
