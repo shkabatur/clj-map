@@ -8,6 +8,17 @@
         )
   (:gen-class))
 
+(defonce server (atom nil))
+
+(defn stop-server []
+  (when-not (nil? @server)
+    (@server :timeout 100)
+    (reset! server nil)))
+
+(defn start-server []
+  (when (nil? @server)
+    (reset! server (run-server #'app {:port 80}))))
+
 (def my-pool (mk-pool))
 (def nodes (atom []))
 (reset! nodes (parse-string (slurp "nodes.json") true))
@@ -44,16 +55,15 @@
 
   (POST "/change-nodes" []
         (fn [req]
-
           (reset! nodes (parse-string (slurp (:body req)) true))
           (spit "nodes.json" (generate-string @nodes))))
 
   (resources "/")
   (not-found "<p>Page not found.</p>"))
 
-
 (defn -main
   [& args]
   (update-pinged-nodes 4000)
-  (run-server app {:port 80})
+  (reset! server (run-server #'app {:port 80}))
 )
+(stop-server)
