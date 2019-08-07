@@ -8,6 +8,8 @@
                  [compojure "1.6.1"]
                  [cheshire "5.9.0"]
                  [overtone/at-at "1.2.0"]
+                 [hiccup "2.0.0-alpha2"]
+                 [org.clojure/java.jdbc "0.7.9"]
                 ]
   :main ^:skip-aot clj-map.core
   :target-path "target/%s"
