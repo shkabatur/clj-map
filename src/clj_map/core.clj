@@ -15,9 +15,9 @@
     (@server :timeout 100)
     (reset! server nil)))
 
-(defn start-server []
+(defn start-server [app]
   (when (nil? @server)
-    (reset! server (run-server #'app {:port 80}))))
+    (reset! server (run-server app {:port 80}))))
 
 (def my-pool (mk-pool))
 (def nodes (atom []))
