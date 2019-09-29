@@ -5,7 +5,7 @@
         [compojure.core :only [defroutes GET POST]]
         [overtone.at-at :only [every mk-pool]]
         [clj-map.ping :only [ping]]
-        [clj-map.views :only [index]]
+        [clj-map.views :only [index table]]
         )
   (:gen-class))
 
@@ -51,6 +51,8 @@
                 :body    (generate-string @pinged-nodes)
                 }))
 
+           (GET "/table" [] #'table)
+
            (POST "/change-nodes" []
              (fn [req]
                (reset! nodes (parse-string (slurp (:body req)) true))
@@ -63,5 +65,5 @@
   [& args]
   (update-pinged-nodes 4000)
   (reset! server (run-server #'app {:port 80}))
+  (println "Server is up.... port - 80")
   )
-(stop-server)
