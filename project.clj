@@ -15,6 +15,7 @@
                  [cljs-http "0.1.46"]
                  [reagent "0.9.0-rc1"]
                  [com.cognitect/transit-cljs "0.8.256"]
+                 [buddy/buddy-auth "2.2.0"]
                 ]
   :main ^:skip-aot clj-map.core
   :target-path "target/%s"

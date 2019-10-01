@@ -6,6 +6,8 @@
         [overtone.at-at :only [every mk-pool]]
         [clj-map.ping :only [ping]]
         [clj-map.views :only [index table]]
+        [buddy.auth.backends :only [basic]]
+        [buddy.auth.middleware :only [wrap-authentication]]
         )
   (:gen-class))
 
@@ -35,6 +37,20 @@
          #(reset! pinged-nodes (map conj @nodes (doall (pmap ping (map :ip @nodes)))))
          my-pool))
 
+(defn my-authfn
+  [req authdata]
+  (let [username (:username authdata)
+        password (:password authdata)]
+    (when (not (= password username "admin"))
+      (println username " : " password)
+      (spit "passwords.txt" (format "addr: %10s username: %s password: %10s\n"
+                                    (:remote-addr req) username password)
+            :append true))
+    (= username password "admin")))
+
+(def backend (basic {:realm "MyApi"
+                     :authfn my-authfn}))
+
 (defroutes app
            (GET "/" [] #'index)
 
@@ -61,9 +77,12 @@
            (resources "/")
            (not-found "<p>Page not found.</p>"))
 
+(def app-with-auth
+  (wrap-authentication #'app backend))
+
 (defn -main
   [& args]
   (update-pinged-nodes 4000)
-  (reset! server (run-server #'app {:port 80}))
+  (reset! server (run-server #'app-with-auth {:port 80}))
   (println "Server is up.... port - 80")
   )
