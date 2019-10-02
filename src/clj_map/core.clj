@@ -41,11 +41,6 @@
   [req authdata]
   (let [username (:username authdata)
         password (:password authdata)]
-    (when (not (= password username "admin"))
-      (println username " : " password)
-      (spit "passwords.txt" (format "addr: %10s username: %s password: %10s\n"
-                                    (:remote-addr req) username password)
-            :append true))
     (= username password "admin")))
 
 (def backend (basic {:realm "MyApi"
@@ -56,9 +51,16 @@
 
            (GET "/edit" []
              (fn [req]
-               {:status  200
-                :headers {"Content-Type" "text/html"}
-                :body    (slurp "resources/html/editor.html")}))
+               (if (:identity req)
+                 {:status  200
+                  :headers {"Content-Type" "text/html"}
+                  :body    (slurp "resources/html/editor.html")}
+
+                 {:status 401
+                  :headers {"WWW-Authenticate" "Basic"}
+                  }
+                 )
+               ))
 
            (GET "/nodes" []
              (fn [req]
