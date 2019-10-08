@@ -7,8 +7,9 @@
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://C:\Users\den\src\clj-map\dev-resources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/resources" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src-cljs/table" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src-cljs" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src-cljs/map" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/test" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/resources/public/js" />
       <excludeFolder url="file://$MODULE_DIR$/target/default" />
@@ -88,6 +89,7 @@
     <orderEntry type="library" name="Leiningen: reagent:0.9.0-rc1" level="project" />
     <orderEntry type="library" name="Leiningen: ring/ring-codec:1.1.0" level="project" />
     <orderEntry type="library" name="Leiningen: ring/ring-core:1.6.3" level="project" />
+    <orderEntry type="library" name="Leiningen: rm-hull/monet:0.3.0" level="project" />
     <orderEntry type="library" name="Leiningen: tigris:0.1.1" level="project" />
   </component>
 </module>

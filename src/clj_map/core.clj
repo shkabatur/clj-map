@@ -5,7 +5,7 @@
         [compojure.core :only [defroutes GET POST]]
         [overtone.at-at :only [every mk-pool]]
         [clj-map.ping :only [ping]]
-        [clj-map.views :only [index table]]
+        [clj-map.views :only [index table my-map]]
         [buddy.auth.backends :only [basic]]
         [buddy.auth.middleware :only [wrap-authentication]]
         )
@@ -70,6 +70,8 @@
                 }))
 
            (GET "/table" [] #'table)
+
+           (GET "/map" [] #'my-map)
 
            (POST "/change-nodes" []
              (fn [req]

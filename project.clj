@@ -16,7 +16,8 @@
                  [reagent "0.9.0-rc1"]
                  [com.cognitect/transit-cljs "0.8.256"]
                  [buddy/buddy-auth "2.2.0"]
-                ]
+                 [rm-hull/monet "0.3.0"]]
+
   :main ^:skip-aot clj-map.core
   :target-path "target/%s"
   :profiles {:uberjar {:aot :all}}
@@ -25,11 +26,19 @@
 
   :cljsbuild
   {:builds
-   [{
-     :source-paths ["src-cljs"]
-     :compiler {:output-to "resources/public/js/clj-main.js"
+   {
+    :table
+    {
+     :source-paths ["src-cljs/table"]
+     :compiler {:output-to "resources/public/js/table.js"
                 :optimizations :whitespace
-                :pretty-print true}}]}
+                :pretty-print true}}
+    ;----------------------------------------------------------------
+    :map
+    {
+     :source-paths ["src-cljs/map"]
+     :compiler {:output-to "resources/public/js/map.js"
+                :optimizations :whitespace
+                :pretty-print true}}}}
   :aliases
-  {"start" ["do" "clean," "cljsbuild" "once," "run"]}
-  )
+  {"start" ["do" "clean," "cljsbuild" "once," "run"]})

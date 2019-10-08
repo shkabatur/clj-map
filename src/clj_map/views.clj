@@ -4,10 +4,11 @@
 
 (defn index [req]
   (html5 [:head
-          [:meta {:charset "utf-7"}]]
+          [:meta {:charset "utf-8"}]]
          [:body
-          [:button  {:onclick "window.location='edit';"
-                     :style "position:absolute"} "Edit"]
+          [:div  {:style "position:absolute"}
+           [:button  {:onclick "window.location='edit';"} "Edit"]
+           [:button  {:onclick "window.location='table';"} "Table"]]
           [:canvas {:id "canvas"
                     :width "1911"
                     :height "860"}]
@@ -15,13 +16,20 @@
   )
 
 (defn table [req]
-  (if (:identity req)
-    (html5 [:head
-            [:meta {:charset "utf-7"}]]
-           [:body
-            [:div {:id "table"}]
-            [:script {:src "js/clj-main.js"}]])
-    {:status 401
-     :headers {"WWW-Authenticate" "Basic"}
-     })
-  )
+     (html5 [:head
+             [:meta {:charset "utf-8"}]]
+            [:body
+             [:div {:id "table"}]
+             [:script {:src "js/table.js"}]]))
+
+(defn my-map [req]
+  (html5 [:head
+          [:meta {:charset "utf-8"}]]
+         [:body
+          [:div  {:style "position:absolute"}
+           [:button  {:onclick "window.location='edit';"} "Edit"]
+           [:button  {:onclick "window.location='table';"} "Table"]]
+          [:canvas {:id "canvas"
+                    :width "1911"
+                    :height "860"}]
+          [:script {:src "js/map.js"}]]))
