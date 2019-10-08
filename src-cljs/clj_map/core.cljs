@@ -35,9 +35,6 @@
       #_(pprint @nodes)))
 
 
-(defn some-component []
-  [:div {:id "list"}
-   (into [:div {:id "underlist"}] (map in-p-tag @nodes))])
 
 
 (defn mount-it []
@@ -52,4 +49,5 @@
                   (go (let [response (<! (http/get "/nodes"))]
                         (reset! nodes (:body response))
                         #_(pprint @nodes)))
-                  )))
+                  )
+                3000))
