@@ -14,20 +14,42 @@
 
 (def nodes (r/atom []))
 
-(defn in-p-tag [{:keys [ip name ping]}]
-  [:p name "(" ip ")=" (str ping)])
+(defn trtd [{:keys [ip name ping]}]
+  [:tr
+   [:td name]
+   [:td ip]
+   [:td (str ping)]])
+
+(defn my-table [nodes]
+  (into [:table {:id "nodes-table" }
+   [:tr
+    [:th "Имя"]
+    [:th "IP"]
+    [:th "Пинг"]]
+   ]
+        (map trtd @nodes)))
+
 
 (go (let [response (<! (http/get "/nodes"))]
       (reset! nodes (:body response))
       #_(pprint @nodes)))
 
+
 (defn some-component []
   [:div {:id "list"}
    (into [:div {:id "underlist"}] (map in-p-tag @nodes))])
 
+
 (defn mount-it []
-  (r/render [some-component nodes]
+  (r/render [my-table nodes]
             (.getElementById js/document "table")))
 
 (mount-it)
 
+(def interval (.setInterval
+                js/window
+                (fn []
+                  (go (let [response (<! (http/get "/nodes"))]
+                        (reset! nodes (:body response))
+                        #_(pprint @nodes)))
+                  )))
