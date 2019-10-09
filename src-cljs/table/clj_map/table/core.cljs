@@ -42,8 +42,7 @@
 
 (mount-it)
 
-(def interval (.setInterval
-                js/window
+(def interval (js/setInterval
                 (fn []
                   (go (let [response (<! (http/get "/nodes"))]
                         (reset! nodes (:body response))
