@@ -27,6 +27,10 @@
   :cljsbuild
   {:builds
    {
+    :canvas
+    {
+     :source-paths ["src-cljs/canvas"]
+     }
     :table
     {
      :source-paths ["src-cljs/table"]
