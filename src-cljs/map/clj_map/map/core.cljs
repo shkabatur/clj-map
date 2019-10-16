@@ -2,16 +2,16 @@
             (:require-macros [cljs.core.async.macros :refer [go]])
             (:require [cljs-http.client :as http]
                       [cljs.core.async :refer [<!]]
-                      #_[reagent.core :as r]
+                      [reagent.core :as r]
                       #_[cljs.pprint :refer [pprint]]
                       [clj-map.canvas.core :as canvas]
-                      #_[clj-map.map.components :as components]
+                      [clj-map.map.components :as components]
                       ))
 
 
 (enable-console-print!)
 
-(def current-node (atom {}))
+(def current-node (r/atom {}))
 (def nodes (atom []))
 (def node-radius (atom 10))
 
@@ -36,6 +36,8 @@
 
 (set! (.-onload js/window)
       (fn []
+        (r/render [components/node-component current-node]
+                  (js/document.getElementById "mount-point"))
         (print "KEK")
         (canvas/draw-image ctx map-img {:x 0 :y 0 :w 1910 :h 859})
         ;;этот вызов необходим для мгновенной отрисовки точек при загрузке страницы,
@@ -70,7 +72,6 @@
                          @nodes))]
             (when node
               (print node)
-              (js/alert (str (:name node) ": " (:ip node)))
               (reset! current-node node)
               )
             )

@@ -29,8 +29,9 @@
           [:div  {:style "position:absolute"}
            [:button  {:onclick "window.location='edit';"} "Edit"]
            [:button  {:onclick "window.location='table';"} "Table"]
+           [:div {:id "mount-point"}]
            ]
-          [:div {:id "mount-point"}]
+
           [:canvas {:id "canvas"
                     :width "1911"
                     :height "860"}]

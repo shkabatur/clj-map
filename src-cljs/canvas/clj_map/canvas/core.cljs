@@ -3,8 +3,6 @@
 
 
 
-
-
 (defn create-image
   "create new image"
   [img-path]
