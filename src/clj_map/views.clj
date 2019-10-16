@@ -2,7 +2,7 @@
   (:use
     [hiccup.page :only [html5 include-css include-js]]))
 
-(defn index [req]
+#_(defn index [req]
   (html5 [:head
           [:meta {:charset "utf-8"}]]
          [:body
@@ -22,13 +22,15 @@
              [:div {:id "table"}]
              [:script {:src "js/table.js"}]]))
 
-(defn my-map [req]
+(defn index [req]
   (html5 [:head
           [:meta {:charset "utf-8"}]]
          [:body
           [:div  {:style "position:absolute"}
            [:button  {:onclick "window.location='edit';"} "Edit"]
-           [:button  {:onclick "window.location='table';"} "Table"]]
+           [:button  {:onclick "window.location='table';"} "Table"]
+           ]
+          [:div {:id "mount-point"}]
           [:canvas {:id "canvas"
                     :width "1911"
                     :height "860"}]

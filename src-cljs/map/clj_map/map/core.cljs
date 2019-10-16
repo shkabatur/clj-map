@@ -5,52 +5,73 @@
                       #_[reagent.core :as r]
                       #_[cljs.pprint :refer [pprint]]
                       [clj-map.canvas.core :as canvas]
+                      #_[clj-map.map.components :as components]
                       ))
 
 
 (enable-console-print!)
 
+(def current-node (atom {}))
 (def nodes (atom []))
-;--------------------------------------------------------------
-;setting up some pictures
-(def map-img (canvas/create-image "img/map-night.jpg"))
-(def green-img (canvas/create-image "img/green.png"))
-(def red-img (canvas/create-image "img/red.png"))
+(def node-radius (atom 10))
 
-;---------------------------------------------------------------
-;setup canvas
+
+;;****************************************************************
+;;setup canvas
 (def canvas-dom (.getElementById js/document "canvas"))
 (def ctx (canvas/create-2d-context canvas-dom))
 
+(canvas/font-style ctx "italic 10pt Arial")
 
+(def map-img (canvas/create-image "img/map-night.jpg"))
 
-;---------------------------------------------------------------
-(defn draw-nodes
+;;****************************************************************
+
+(defn update-nodes-and-draw
   [nodes]
-  (doseq [{:keys [x y name result]} nodes]
-    (if result
-      (canvas/draw-image ctx green-img {:x x :y y :w 10 :h 10})
-      (canvas/draw-image ctx red-img {:x x :y y :w 10 :h 10}))))
-
-(set! (.-onclick canvas-dom)
-      (fn [event]
-        (let [x (.-clientX event)
-              y (.-clientY event)]
-          (print (filter #(and (= x (:x %)) (= y (:y %)))
-                         @nodes))
-          (print x y))))
+  (go (let [response (<! (http/get "/nodes"))]
+        (reset! nodes (:body response))))
+  (canvas/draw-nodes ctx @nodes @node-radius))
 
 
 (set! (.-onload js/window)
       (fn []
         (print "KEK")
         (canvas/draw-image ctx map-img {:x 0 :y 0 :w 1910 :h 859})
+        ;;этот вызов необходим для мгновенной отрисовки точек при загрузке страницы,
+        ;;если вызвать просто draw-nodes , отрисовка произойдет через несколько секунд
+        (go (let [response (<! (http/get "/nodes"))]
+              (reset! nodes (:body response))
+              (canvas/draw-nodes ctx @nodes  @node-radius)
+              ))
+        ;(update-nodes-and-draw nodes)
         (js/setInterval
           (fn []
             (canvas/draw-image ctx map-img {:x 0 :y 0 :w 1910 :h 859})
-            (go (let [response (<! (http/get "/nodes"))]
-                  (reset! nodes (:body response))))
-            (draw-nodes @nodes))
+            (update-nodes-and-draw nodes))
 
           3000)
         ))
+
+
+(set! (.-ondblclick canvas-dom)
+      (fn [event]
+        (let [x (.-layerX event)
+              y (.-layerY event)]
+          (print "KEK KEK KEK")
+          (print x y))))
+
+(set! (.-onclick canvas-dom)
+      (fn [event]
+        (let [x (.-layerX event)
+              y (.-layerY event)]
+          (let [node (first (filter #(canvas/collision? {:x x      :y y      :r 5}
+                                                 {:x (:x %) :y (:y %) :r 5})
+                         @nodes))]
+            (when node
+              (print node)
+              (js/alert (str (:name node) ": " (:ip node)))
+              (reset! current-node node)
+              )
+            )
+          (print x y))))
