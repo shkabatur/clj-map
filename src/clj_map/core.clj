@@ -34,7 +34,7 @@
 (defn update-pinged-nodes
   [n]
   (every n
-         #(reset! pinged-nodes (map conj @nodes (doall (pmap ping (map :ip @nodes)))))
+         #(reset! pinged-nodes (map conj @nodes (pmap ping (map :ip @nodes))))
          my-pool))
 
 (defn my-authfn

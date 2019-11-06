@@ -5,12 +5,12 @@
     <output-test url="file://$MODULE_DIR$/target/default/classes" />
     <exclude-output />
     <content url="file://$MODULE_DIR$">
-      <sourceFolder url="file://C:\Users\den\src\clj-map\dev-resources" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/resources" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src-cljs/table" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src-cljs/canvas" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src-cljs/map" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/resources" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src-cljs/table" isTestSource="false" />
+      <sourceFolder url="file://C:\Users\den\src\clojure\clj-map\dev-resources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/test" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/resources/public/js" />
       <excludeFolder url="file://$MODULE_DIR$/target/default" />
